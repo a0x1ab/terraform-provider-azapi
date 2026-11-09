@@ -2,6 +2,7 @@ package locks
 
 import (
 	"log"
+	"strings"
 	"sync"
 )
 
@@ -16,6 +17,8 @@ type mutexKV struct {
 // Locks the mutex for the given key. Caller is responsible for calling Unlock
 // for the same key
 func (m *mutexKV) Lock(key string) {
+	// ARM resource IDs are case insensitive.
+	key = strings.ToLower(key)
 	log.Printf("[DEBUG] Locking %q", key)
 	m.get(key).Lock()
 	log.Printf("[DEBUG] Locked %q", key)
